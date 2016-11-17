@@ -49,7 +49,8 @@ ans = word_features_std[np.ix_(((Y_train.transpose())[0]) - 1, np.arange(218))]
 # clf = linear_model.Ridge(alpha=0.1)
 # clf.fit(X_train, ans)
 # alpha_ridge = np.arange(0.0001, 0.1, 0.001)
-alpha_ridge = np.arange(01, 50, 01)
+alpha_ridge = np.arange(10, 1000, 10)
+xmin = 0; xmax = 1200; ymin = 0; ymax= 100
 # alpha_ridge = [1e-15, 1e-10, 1e-8, 1e-4, 1e-3, 1e-2, 1, 5, 10, 20]
 acc = []
 for alpha in alpha_ridge:
@@ -67,7 +68,6 @@ for alpha in alpha_ridge:
     print " t_diff = ", (t_diff)
 print alpha_ridge,"\n",acc
 axes = plt.gca()
-xmin = 0; xmax = 25; ymin = 0; ymax= 100
 axes.set_xlim([xmin,xmax])
 axes.set_ylim([ymin,ymax])
 plt.plot(alpha_ridge,acc,'*-')
