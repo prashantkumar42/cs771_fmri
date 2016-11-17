@@ -7,9 +7,9 @@ import time
 from sklearn import linear_model
 import matplotlib.pyplot as plt
 from matplotlib.pylab import rcParams
-rcParams['figure.figsize'] = 100, 50
+# rcParams['figure.figsize'] = 100, 50
 
-dict_mat = lod.loadmat("/home/prince/Documents/acads_7thsem/MLT/fMRI/fmri_words.mat")
+dict_mat = lod.loadmat("./fMRI/fmri_words.mat")
 # dict_mat = lod.loadmat("fmri_words.mat")
 X_train = dict_mat['X_train']
 Y_train = dict_mat['Y_train']
@@ -21,7 +21,8 @@ print type(X_train), type(Y_train), X_train.shape, Y_train.shape
 
 def ridge_regression(data, y_val, alpha ):
     # Fit the model
-    ridgereg = linear_model.Ridge(alpha=alpha, normalize=True)
+    ridgereg = linear_model.Ridge(alpha=alpha)
+    # ridgereg = linear_model.Ridge(alpha=alpha, normalize=True)
     ridgereg.fit(data, y_val)
     W = ridgereg.coef_
 
@@ -47,7 +48,9 @@ ans = word_features_std[np.ix_(((Y_train.transpose())[0]) - 1, np.arange(218))]
 
 # clf = linear_model.Ridge(alpha=0.1)
 # clf.fit(X_train, ans)
-alpha_ridge = [1e-15, 1e-10, 1e-8, 1e-4, 1e-3, 1e-2, 1, 5, 10, 20]
+# alpha_ridge = np.arange(0.0001, 0.1, 0.001)
+alpha_ridge = np.arange(01, 50, 01)
+# alpha_ridge = [1e-15, 1e-10, 1e-8, 1e-4, 1e-3, 1e-2, 1, 5, 10, 20]
 acc = []
 for alpha in alpha_ridge:
     t = time.time()
@@ -63,5 +66,9 @@ for alpha in alpha_ridge:
     t_diff = time.time() - t
     print " t_diff = ", (t_diff)
 print alpha_ridge,"\n",acc
-plt.plot(alpha_ridge,acc,'*')
+axes = plt.gca()
+xmin = 0; xmax = 25; ymin = 0; ymax= 100
+axes.set_xlim([xmin,xmax])
+axes.set_ylim([ymin,ymax])
+plt.plot(alpha_ridge,acc,'*-')
 plt.show()

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.pylab import rcParams
 rcParams['figure.figsize'] = 100, 50
 
-dict_mat = lod.loadmat("/home/prince/Documents/acads_7thsem/MLT/fMRI/fmri_words.mat")
+dict_mat = lod.loadmat("./fMRI/fmri_words.mat")
 # dict_mat = lod.loadmat("fmri_words.mat")
 X_train = dict_mat['X_train']
 Y_train = dict_mat['Y_train']
@@ -46,11 +46,11 @@ ans = word_features_std[np.ix_(((Y_train.transpose())[0]) - 1, np.arange(218))]
 # clf = linear_model.Ridge(alpha=0.1)
 # clf.fit(X_train, ans)
 l1_ratio = np.arange(0, 1.1, 0.1)  # generating values for l1 ration used in enet regularisation
-alpha_enet = [ 0.1, 1, 5, 10, 20]
+alpha_enet = [1e-3, 0.005, 0.01, 0.03, 0.05, 0.07, 0.09, 0.1, 1, 5, 10, 20]
 acc = []
 for l1_val in l1_ratio:
     for alpha in alpha_enet:
-        print "alpha = ",alpha ,"L1_ratio = " ,l1_val
+        print "alpha = ", alpha ,"L1_ratio = " ,l1_val
         t = time.time()
         W = enet_regression(X_train, ans, alpha, l1_val)
 
