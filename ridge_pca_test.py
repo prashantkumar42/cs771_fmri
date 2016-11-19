@@ -1,6 +1,7 @@
 import scipy.io as lod
 import numpy as np
 from sklearn.feature_selection import SelectPercentile, f_classif
+from sklearn.decomposition import PCA
 import scipy.io as lod
 import numpy as np
 import time
@@ -17,6 +18,14 @@ X_test = dict_mat['X_test']
 Y_test = dict_mat['Y_test']
 word_features_std = dict_mat['word_features_std']
 print type(X_train), type(Y_train), X_train.shape, Y_train.shape
+
+
+###### pca for x_s
+pca = PCA(n_components=300)
+pca.fit(X_train)
+X_train = pca.transform(X_train)
+X_test = pca.transform(X_test)
+######
 
 
 def ridge_regression(data, y_val, alpha ):

@@ -1,7 +1,5 @@
 from sklearn import linear_model
 import time
-import threading
-# import _thread
 import numpy as np
 import scipy.io
 
@@ -18,19 +16,11 @@ t = time.time()
 ans = word_features_std[np.ix_(((y_train.transpose())[0]) - 1, np.arange(218))]
 
 
-# t_diff = time.time()-t
-# print(t_diff)
-
-def fun(alpha_cur):
-    print("fun called ")
-    # clf = linear_model.Lasso(alpha=alpha_cur)
-    clf = linear_model.Lasso(alpha=alpha_cur, normalize=True)
-    # y=ans[:, 0]
-    # clf.fit(x_train,y)
-    # print("fitting the train data...")
-    clf.fit(x_train, ans)
-    # print(clf.coef_.shape)
-    # print(np.count_nonzero(clf.coef_))
+def fun(alpha_cur, l1_ratio):
+    # print("fun called for alpha: " + str(alpha_cur) + " & l1_ratio: " + str(l1_ratio))
+    # enet_ = linear_model.ElasticNet(alpha=alpha_cur, l1_ratio=l1_ratio, normalize=True)
+    enet_ = linear_model.ElasticNet(alpha=alpha_cur, l1_ratio=l1_ratio)
+    enet_.fit(x_train, ans)
     W = clf.coef_
     # print("Weight Vector Calculated...")
     y_feat_test_pred = np.mat(x_test) * np.mat(W.transpose())
@@ -47,11 +37,13 @@ def fun(alpha_cur):
         correct_count -= min_ind
     # print(y_test_pred[i])
     # print("correct count: " + str(correct_count))
-    print("alpha: " + str(alpha_cur) + " accuracy: " + str(correct_count * 100 / 60.0) + "%")
-    print("fun exited")
+    print("alpha: " + str(alpha_cur) + " l1_ratio: " + str(l1_ratio) + " accuracy: " + str(correct_count * 100 / 60.0) + "%")
+    # print("fun exited")
 
+l1_ratios = np.arange(0, 1.1, 0.1)  # generating values for l1 ration used in enet regularisation
+l1_ratios = [1]
+alpha_enet = [1e-3, 0.005, 0.01, 0.03, 0.05, 0.07, 0.09, 0.1, 1, 5, 10, 20]
 
-# alpha_lasso = [0.03, 0.04, 0.045, 0.055, 0.06, 0.07, 0.08, 0.09]
-alpha_lasso = [0.03, 0.04, 0.045, 0.055]  # , 0.06, 0.07, 0.08, 0.09]
 for alpha_cur in alpha_lasso:
-    fun(alpha_cur)
+    for l1_ratio in l1_ratios:
+        fun(alpha_cur, l1_ratio)
