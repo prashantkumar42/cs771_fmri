@@ -1,0 +1,9 @@
+The data contains:
+
+(1) fmri_word.mat: It contains the following:
+- X_train: It is the training feature matrix of size 300 x 21764. It contains the fMRI measurements of the 300 subjects
+- Y_train: It is the label vector of size 300 x 1. Each entry is the id of the word being shown to the corresponding subject
+- X_test: Test feature matrix of size 60 x 21764 (60 test subjects)
+- Y_test: It is a 60 x 2 matrix with first column being the correct word and the second column being a random incorrect word. Your prediction is correct if you can predict the correct one to have a higher score than the incorrect one.
+
+(2) "meta" folder: It contains two files - dictionary.txt (the 60 words) and semantic_features.txt (which contain the names of the 218 features used to describe each word).
